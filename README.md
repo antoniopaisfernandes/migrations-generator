@@ -8,13 +8,16 @@
 
 Generate Laravel Migrations from an existing database, including indexes and foreign keys!
 
+## Upgrading to Laravel 5.4
+
+Please note that the Laravel 4 Generator edits have been moved to `https://github.com/xethron/Laravel-4-Generators.git` to update compatibility.
+
 ## Laravel 5 installation
 
 The recommended way to install this is through composer:
 
 ```bash
-composer config repositories.repo-name vcs "https://github.com/jamisonvalenta/Laravel-4-Generators.git"
-composer require --dev "way/generators:dev-feature/laravel-five-stable" "xethron/migrations-generator"
+composer require --dev "xethron/migrations-generator"
 ```
 
 Edit `config/app.php` and add this to providers section:
@@ -22,6 +25,18 @@ Edit `config/app.php` and add this to providers section:
 ```php
 Way\Generators\GeneratorsServiceProvider::class,
 Xethron\MigrationsGenerator\MigrationsGeneratorServiceProvider::class,
+```
+If you want this lib only for dev, you can add the following code to your `app/Providers/AppServiceProvider.php` file, within the `register()` method:
+
+```php
+public function register()
+{
+    if ($this->app->environment() !== 'production') {
+        $this->app->register(\Way\Generators\GeneratorsServiceProvider::class);
+        $this->app->register(\Xethron\MigrationsGenerator\MigrationsGeneratorServiceProvider::class);
+    }
+    // ...
+}
 ```
 
 Notes:

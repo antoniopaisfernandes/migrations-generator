@@ -148,7 +148,7 @@ class FieldGenerator {
 			if ($nullable) $decorators[] = 'nullable';
 			if ($default !== null) $decorators[] = $this->getDefault($default, $type);
 			if ($index) $decorators[] = $this->decorate($index->type, $index->name);
-			if ($comment) $decorators[] = "comment('" . $comment . "')";
+			if ($comment) $decorators[] = "comment('" . addcslashes($comment, "\\'") . "')";
 
 			$field = ['field' => $name, 'type' => $type];
 			if ($decorators) $field['decorators'] = $decorators;
@@ -176,7 +176,7 @@ class FieldGenerator {
 	 */
 	protected function getDefault($default, &$type)
 	{
-		if (in_array($default, ['CURRENT_TIMESTAMP'])) {
+		if (in_array($default, ['CURRENT_TIMESTAMP'], true)) {
 			if ($type == 'dateTime')
 				$type = 'timestamp';
 			$default = $this->decorate('DB::raw', $default);
